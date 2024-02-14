@@ -26,6 +26,7 @@ public class Ex04_RegisterMember extends HttpServlet {
 		String pwd2 = request.getParameter("pwd2");
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
+		
 		// uid 중복 확인
 		// pwd와 pwd2가 일치하는지 확인
 		// 입력된 값으로 User 객체를 만든다

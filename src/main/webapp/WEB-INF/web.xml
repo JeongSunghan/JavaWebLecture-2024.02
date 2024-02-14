@@ -99,4 +99,14 @@
     <servlet-name>Ex04_RegisterMember</servlet-name>
     <url-pattern>/Ex04_RegisterMember</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Ex05_Login</display-name>
+    <servlet-name>Ex05_Login</servlet-name>
+    <servlet-class>ch06_basic.Ex05_Login</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Ex05_Login</servlet-name>
+    <url-pattern>/Ex05_Login</url-pattern>
+  </servlet-mapping>
 </web-app>

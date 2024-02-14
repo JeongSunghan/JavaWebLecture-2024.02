@@ -15,7 +15,7 @@
 		<input type="password" name="pwd2" placeholder="패스워드 확인"><br><br>
 		<input type="text" name="name" placeholder="이름"><br><br>
 		<input type="text" name="email" placeholder="이메일"><br><br>
-		<input type="submit" value="등록">		
+		<input type="submit" value="등록"> 
 	</form>	
 </body>
 </html>
