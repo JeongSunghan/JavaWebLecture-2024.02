@@ -10,9 +10,9 @@
 	<h1>Login</h1>
 	<hr>
 		<table>
-<%-- 			<tr><td>아이디</td><td>${uid}</td></tr>
+	<%--	<tr><td>아이디</td><td>${uid}</td></tr>
 			<tr><td>패스워드</td><td>${pwd}</td></tr> 
-			<tr><td>메세지</td><td>${msg}</td></tr>	--%>
+			<tr><td>메세지</td><td>${msg}</td></tr>		--%>
 		</table>
 		<button onclick="location.href='/jw/ch06/login'">처음으로</button>
 </body>
