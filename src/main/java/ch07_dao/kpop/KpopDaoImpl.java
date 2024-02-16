@@ -55,148 +55,45 @@ public class KpopDaoImpl implements KpopDao {
 	@Override
 	public Artist getArtist(int aid) {
 		conn = getConnection();
-		String sql = "select * from girl_group where gid=?";
-		Artist artist = null;
-		
-		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, aid);
-			
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				artist = new Artist(rs.getInt(1), rs.getString(2),
-						LocalDate.parse(rs.getString(3)), rs.getInt(4));
-			}
-			rs.close(); pstmt.close(); conn.close();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return artist;
+		return null;
 	}
 
 	@Override
 	public Song getSong(int sid) {
 		conn = getConnection();
-		String sql = "select * from song where sid=?";
-		Song song = null;
-		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, sid);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				sid = rs.getInt(1);
-				String title = rs.getString(2);
-				String lyrics = rs.getString(3);
-				song = new Song(sid, title, lyrics);
-			}
-			rs.close(); pstmt.close(); 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return song;
+		return null;
 	}
 
 	@Override
 	public void insertArtist(Artist artist) {
 		conn = getConnection();		
-		String sql = "insert into girl_group values(default, ?, ?, ?)";
-		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, artist.getName());
-			pstmt.setString(2, artist.getDebut().toString());
-			pstmt.setInt(3, artist.getHitSongId());
-
-			pstmt.executeUpdate();
-			pstmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
 	public void insertSong(Song song) {
 		conn = getConnection();
-		String sql = "insert song values(default, ?, ?)";
-		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, song.getTitle());
-			pstmt.setString(2, song.getLyrics());
-			
-			pstmt.executeUpdate();
-			pstmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 		
 
 	@Override
 	public void updateArtist(Artist artist) {
-		conn = getConnection();		
-		String sql = "update girl_group set name=?, debut=?, hit_song_id=? where gid=?";
-		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, artist.getName());
-			pstmt.setString(2, artist.getDebut().toString());
-			pstmt.setInt(3, artist.getHitSongId());
-			pstmt.setInt(4, artist.getAid());
-
-			pstmt.executeUpdate();
-			pstmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		
+		conn = getConnection();	
 	}
 
 	@Override
 	public void updateSong(Song song) {
 		conn = getConnection();		
-		String sql = "update song set title=?, lyrics=? where sid=?";
-		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, song.getTitle());
-			pstmt.setString(2, song.getLyrics());
-			pstmt.setInt(3, song.getSid());
-			
-			pstmt.executeUpdate();
-			pstmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	} 
 
 	@Override
 	public void deleteArtist(int aid) {
 		conn = getConnection();		
-		String sql = "delete from girl_group where gid=?";
-		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, aid);
-			
-			pstmt.executeUpdate();
-			pstmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
 	public void deleteSong(int sid) {
 		conn = getConnection();		
-		String sql = "delete from song where sid=?";
-		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, sid);
-			
-			pstmt.executeUpdate();
-			pstmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 	}
 }
 
