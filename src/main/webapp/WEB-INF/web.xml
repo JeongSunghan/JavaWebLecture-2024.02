@@ -169,4 +169,24 @@
     <servlet-name>KcityController</servlet-name>
     <url-pattern>/KcityController</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>KpopController</display-name>
+    <servlet-name>KpopController</servlet-name>
+    <servlet-class>ch07_dao.kpop.KpopController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>KpopController</servlet-name>
+    <url-pattern>/KpopController</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>KpopTest</display-name>
+    <servlet-name>KpopTest</servlet-name>
+    <servlet-class>ch07_dao.kpop.KpopTest</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>KpopTest</servlet-name>
+    <url-pattern>/KpopTest</url-pattern>
+  </servlet-mapping>
 </web-app>
