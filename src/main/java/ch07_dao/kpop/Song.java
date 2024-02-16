@@ -5,7 +5,7 @@ public class Song {
 	private String title;
 	private String lyrics;
 
-	public Song() {}
+	
 	public Song(int sid, String title, String lyrics) {
 		this.sid = sid;
 		this.title = title;
@@ -13,6 +13,7 @@ public class Song {
 	}
 
 	//insert
+	public Song() {}
 	public Song(String title, String lyrics) {
 		this.title = title;
 		this.lyrics = lyrics;

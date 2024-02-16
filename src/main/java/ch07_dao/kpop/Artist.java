@@ -8,8 +8,6 @@ public class Artist {
 	private LocalDate debut;
 	private int hitSongId;
 
-	// 기본 생성자
-	public Artist() {}
 	public Artist(int aid, String name, LocalDate debut, int hitSongId) {
 		this.aid = aid;
 		this.name = name;
@@ -17,7 +15,7 @@ public class Artist {
 		this.hitSongId = hitSongId;
 	}
 
-	// insert 용도
+	public Artist() {}
 	public Artist(String name, LocalDate debut, int hitSongId) {
 		this.name = name;
 		this.debut = debut;

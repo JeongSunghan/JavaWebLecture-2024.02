@@ -12,7 +12,6 @@ public class Kpop {
 
 	public Kpop() { }
 	public Kpop(int aid, String name, LocalDate debut, int sid, String title, String lyrics) {
-		super();
 		this.aid = aid;
 		this.name = name;
 		this.debut = debut;
@@ -20,15 +19,7 @@ public class Kpop {
 		this.title = title;
 		this.lyrics = lyrics;
 	}
-
-	// insert
-	public Kpop(String name, LocalDate debut, String title, String lyrics) {
-		this.name = name;
-		this.debut = debut;
-		this.title = title;
-		this.lyrics = lyrics;
-	}
-
+	
 	@Override
 	public String toString() {
 		return "Kpop [aid=" + aid + ", name=" + name + ", debut=" + debut + ", sid=" + sid + ", title=" + title
