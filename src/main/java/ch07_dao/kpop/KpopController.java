@@ -31,7 +31,11 @@ public class KpopController extends HttpServlet {
 		switch(action) {
 		case "list":
 			List<Kpop> list = kDao.getKpopList();
+			//리스트 화면을 받고
 			rd = request.getRequestDispatcher("/ch07/kpop/list.jsp");
+			//jsp파일에 보내는 방법 - MVC
+			//        V(View를 통해서 보여줌)
+			//user => CONTROLLER => MODUL => DB
 			request.setAttribute("list", list);
 			rd.forward(request, response);
 			break;
@@ -78,6 +82,7 @@ public class KpopController extends HttpServlet {
 			if (method.equals("GET")) {
 				rd = request.getRequestDispatcher("/ch07/kpop/insertSong.jsp");
 				rd.forward(request, response);
+				//view 코드
 			} else {
 				title = request.getParameter("title");
 				lyrics = request.getParameter("lyrics");
