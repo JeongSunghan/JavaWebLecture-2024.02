@@ -21,11 +21,13 @@ public class Ex03_SetCookie extends HttpServlet {
 		
 		Cookie c1 = new Cookie("cookie-name", "cookie-value");
 		c1.setMaxAge(24 * 60 * 60);		//유효기간: 24 * 60 *60 초 ==> 1일
+		c1.setDomain("c1");
 		response.addCookie(c1);
 		
 		String kMsg = URLEncoder.encode("한글 데이터", "utf-8");
 		Cookie c2 = new Cookie("hangul-name", kMsg);
 		c2.setMaxAge(-1);			//브라우저가 닫히면 삭제가 되는 데이터
+		c2.setDomain("c2");
 		response.addCookie(c2);
 		
 		out.write("<h1>현재시간: " + new Date() + "</h1>");

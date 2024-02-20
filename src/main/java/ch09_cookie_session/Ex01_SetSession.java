@@ -44,7 +44,7 @@ public class Ex01_SetSession extends HttpServlet {
 		
 		session.setMaxInactiveInterval(24 * 60 * 60);	//24h
 		
-		session.invalidate();
+//		session.invalidate();
 		
 //		response.getWriter().append("served at: ").append(request.getContextPath());
 		RequestDispatcher rd = request.getRequestDispatcher("/ch09/session.jsp");

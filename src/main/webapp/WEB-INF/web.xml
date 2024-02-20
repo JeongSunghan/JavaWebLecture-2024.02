@@ -229,4 +229,42 @@
     <servlet-name>Ex04_GetCookie</servlet-name>
     <url-pattern>/Ex04_GetCookie</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UserController</display-name>
+    <servlet-name>UserController</servlet-name>
+    <servlet-class>ch09_cookie_session.user.UserController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserController</servlet-name>
+    <url-pattern>/UserController</url-pattern>
+  </servlet-mapping>
+  <filter>
+    <display-name>EncodingFilter</display-name>
+    <filter-name>EncodingFilter</filter-name>
+    <filter-class>ch10_filter.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>EncodingFilter</filter-name>
+    <url-pattern>/EncodingFilter</url-pattern>
+  </filter-mapping>
+  <servlet>
+    <description></description>
+    <display-name>FilterTest</display-name>
+    <servlet-name>FilterTest</servlet-name>
+    <servlet-class>ch10_filter.FilterTest</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FilterTest</servlet-name>
+    <url-pattern>/FilterTest</url-pattern>
+  </servlet-mapping>
+  <filter>
+    <display-name>LoginCheckFilter</display-name>
+    <filter-name>LoginCheckFilter</filter-name>
+    <filter-class>ch10_filter.LoginCheckFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>LoginCheckFilter</filter-name>
+    <url-pattern>/LoginCheckFilter</url-pattern>
+  </filter-mapping>
 </web-app>
