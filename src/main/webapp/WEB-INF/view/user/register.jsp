@@ -24,7 +24,7 @@
           <div class="card-body">
             <div class="card-title"><h3><strong>회원 가입</strong></h3></div>
             <hr>
-            <form action="/jw/ch09/user/register" method="post">
+            <form action="/jw/bbs/user/register" method="post">
               <table class="table table-borderless">
                 <tr>
                   <td style="width: 50%;"><label class="col-form-label">사용자 ID</label></td>
@@ -56,7 +56,7 @@
             </form>
             <p class="mt-3">
               <span class="me-3">이미 사용자 계정이 있으신가요?</span>
-              <a href="/jw/ch09/user/login">로그인</a>
+              <a href="/jw/bbs/user/login">로그인</a>
             </p>
             <div class="mt-3 mb-3">
               <span class="me-3">소셜 계정으로 가입</span>
