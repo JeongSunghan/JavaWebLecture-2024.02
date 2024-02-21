@@ -80,6 +80,7 @@
 				<c:if test="${member.addr.country ne '한국' and member.addr.country ne '미국' }">${member.addr }</c:if>
 			</td>
 			<td>${loop.index }</td>
+			<!-- https://www.musinsa.com/app/goods/3571835 -->
 		</tr>
 	</c:forEach>
 	</table>
