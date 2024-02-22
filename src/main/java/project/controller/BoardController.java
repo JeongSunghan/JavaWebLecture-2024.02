@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import project.entity.Board;
+import project.entity.Reply;
 import project.service.BoardService;
 import project.service.BoardServiceImpl;
 
@@ -30,6 +31,8 @@ public class BoardController extends HttpServlet {
 		String title = "", content = ""; 
 		String sessUid = "";
 		Board board = null;
+		int bid = 0;
+		
 		
 		switch(action) {
 		case "list":			//접속방법 => /jw/bbs/board/list?p=1&f=title&q=검색
@@ -40,6 +43,8 @@ public class BoardController extends HttpServlet {
 			session.setAttribute("currentBoardPage", page);
 			field = (field == null || field.equals("")) ? "title" : field;
 			query = (query == null || query.equals("")) ? "" : query;
+			request.setAttribute("field", field);
+			request.setAttribute("query", query);
 			List<Board> boardList = bSvc.getBoardList(page, field, query);
 			request.setAttribute("boardList", boardList);
 		
@@ -73,7 +78,21 @@ public class BoardController extends HttpServlet {
 				response.sendRedirect("/jw/bbs/board/list?p=1");			
 			}
 			break;
+			
+		case "detail":
+			bid = Integer.parseInt(request.getParameter("bid"));
+			bSvc.increaseViewCount(bid);
+			
+			board = bSvc.getBoard(bid);
+			request.setAttribute("board", board);
+			
+			List<Reply> replyList = null;				//댓글 목록 필요
+			request.setAttribute("replyList", replyList);
+			
+			rd = request.getRequestDispatcher("/WEB-INF/view/board/detail.jsp");
+			rd.forward(request, response);
+			break;
+			
 		}
-
 	}
 }

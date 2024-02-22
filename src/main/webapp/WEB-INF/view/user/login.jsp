@@ -10,7 +10,7 @@
 <body class="bg-light">
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
     <div class="container-fluid">
-      <img src="/jw/img/ck-logo.png" height="60">
+      <img src="/src/img/ck-logo.png" height="60">
       <div class="p-2 bg-dard justify-content-center">
         <img src="https://picsum.photos/1500/180" width="100%">
       </div>
@@ -51,10 +51,10 @@
             <div class="mt-3 mb-3">
               <span class="me-3">소셜 계정으로 로그인</span>
               <span>
-                <a class="ms-2" href="#"><img src="/jw/img/google-logo.png" height="32"></a>
-                <a class="ms-2" href="#"><img src="/jw/img/github-logo.png" height="32"></a>
-                <a class="ms-2" href="#"><img src="/jw/img/naver-logo.jpg" height="32"></a>
-                <a class="ms-2" href="#"><img src="/jw/img/kakao-logo.png" height="32"></a>
+                <a class="ms-2" href="#"><img src="/src/img/google-logo.png" height="32"></a>
+                <a class="ms-2" href="#"><img src="/src/img/github-logo.png" height="32"></a>
+                <a class="ms-2" href="#"><img src="/src/img/naver-logo.jpg" height="32"></a>
+                <a class="ms-2" href="#"><img src="/src/img/kakao-logo.png" height="32"></a>
                 </span>
               </div>
             </div>
