@@ -56,6 +56,18 @@
                         </tr>
                         </c:forEach>
                      </table>
+                     <!-- pagenation -->
+                     <!-- justify-content-center = 화면 중앙 -->
+					 <ul class="pagination justify-content-center">
+					 	<li class="page-item"><a class="page-link" href="#"><i class="fa-solid fa-less-than"></i></a></li>
+					 	<!-- 페이지 반복문 -->
+					 	<c:forEach var="page" items="${pageList }">
+					 		<li class="page-item ${currentUserPage eq page ? 'active' : '' }">
+					 			<a class="page-link" href="/jw/bbs/user/list?page=${page}">${page}</a>
+					 		</li>
+					 	</c:forEach>
+					 	<li class="page-item"><a class="page-link" href="#"><i class="fa-solid fa-greater-than"></i></a></li>
+					</ul>
                   </div>
                   <div class="col-1"></div>
                </div>

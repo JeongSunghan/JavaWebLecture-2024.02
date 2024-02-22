@@ -13,6 +13,8 @@ public interface UserService {
 	User getUserByUid(String uid);
 
 	List<User> getUserList(int page);
+	
+	int getUserCount();
 
 	void registerUser(User user);
 
