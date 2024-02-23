@@ -3,6 +3,7 @@ package project.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,9 +70,9 @@ public class BoardDao {
 			
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Board board = new Board(rs.getInt(1), rs.getString(2), 
-								LocalDateTime.parse(rs.getString(5).replace(" ", "T")),
-								rs.getInt(7), rs.getInt(8), rs.getString(9));
+				Board board = new Board(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), 
+						LocalDateTime.parse(rs.getString(5).replace(" ", "T")),
+						rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9));
 				list.add(board);
 			}
 			rs.close(); pstmt.close(); conn.close();
@@ -99,7 +100,18 @@ public class BoardDao {
 	
 	public void updateBoard(Board board) {
 		Connection conn = getConnection();
-		
+		String sql = "update board set title=?, content=?, modTime=now() where bid=?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, board.getTitle());
+			pstmt.setString(2, board.getContent());
+			pstmt.setInt(3, board.getBid());
+			
+			pstmt.executeUpdate();
+			pstmt.close(); conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void deleteBoard(int bid) {
