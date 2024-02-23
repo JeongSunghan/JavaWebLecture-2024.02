@@ -12,7 +12,7 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> getBoardList(int page, String field, String query) {
 		int offset = (page - 1) * COUNT_PER_PAGE;
 		query = "%" + query + "%";
-		List<Board> list = bDao.getBoardList(field, query, BoardService.COUNT_PER_PAGE, offset);
+		List<Board> list = bDao.getBoardList(field, query, COUNT_PER_PAGE, offset);
 		return list;
 	}
 
@@ -22,14 +22,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int getBoardCount() {
-		return bDao.getBoardCount();
+	public int getBoardCount(String field, String query) {
+		return bDao.getBoardCount(field, query);
 	}
 
 	@Override
 	public void insertBoard(Board board) {
 		bDao.insertBoard(board);
-		
 	}
 
 	@Override
@@ -40,25 +39,17 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public void deleteBoard(int bid) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-		
+		bDao.deleteBoard(bid);
 	}
 
 	@Override
 	public void increaseViewCount(int bid) {
 		bDao.increaseCount("view", bid);
-		
 	}
 
 	@Override
 	public void increaseReplyCount(int bid) {
-		bDao.increaseCount("reply", bid);		
+		bDao.increaseCount("reply", bid);
 	}
 
 }

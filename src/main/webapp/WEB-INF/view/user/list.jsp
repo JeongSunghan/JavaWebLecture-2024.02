@@ -1,103 +1,100 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
 <head>
-   <%@ include file="../common/_head.jspf" %>
-   <style>
-      td, th { text-align: center; }
-      .disabled-link { pointer-events: none; }
-   </style>
-   <script>
-      function deleteFunc(uid) {
-    	 $('#deleteUid').val(uid);
-         $('#deleteModal').modal('show');
-      }
-   </script>
+	<%@ include file="../common/_head.jspf" %>
+	<style>
+		td, th { text-align: center; }
+		.disabled-link { pointer-events: none; }
+	</style>
+	<script>
+		function search() {
+			const field = $('#field').val();
+			const query = $('#query').val();
+			const uri = '/jw/bbs/board/list?p=${currentBoardPage}&f=' + field + '&q=' + query
+			location.href = encodeURI(uri);
+		}
+	</script>
 </head>
 <body>
-   <%@ include file="../common/_top.jspf" %>
-   
-   <div class="container" style="margin-top:80px">
-      <div class="row">
-         <%@ include file="../common/_aside.jspf" %>      
-         <div class="col-9">
-               <h3><strong>사용자 목록</strong>
-                  <span style="font-size:16px"><a href="/jw/bbs/user/register"><i class="fa-solid fa-user-plus"></i>사용자 가입</a></span>
-               </h3>
-               <hr>
-               <div class="row">
-                  <div class="col-1"></div>
-                  <div class="col-10">
-                     <table class="table">
-                        <tr><th>아이디</th><th>이름</th><th>이메일</th><th>등록일</th><th>액션</th></tr>
-                        <c:forEach var="user" items="${list}">
-                        <tr>
-                           <td>${user.uid}</td>
-                           <td>${user.uname}</td>
-                           <td>${user.email}</td>
-                           <td>${user.regDate}</td>
-                           <td>
-                              <!-- 본인만 수정 가능 -->
-                              <c:if test="${user.uid eq sessUid }">      
-                              <a href= "/jw/bbs/user/update?uid=${user.uid}"><i class="fa-solid fa-user-pen"></i></a>
-                              </c:if>
-                              <c:if test="${user.uid ne sessUid }">
-                                 <a href="#" class="disabled-link"><i class="fa-solid fa-user-pen"></i></a>
-                              </c:if>
-                              <!-- 본인 또는 관리자만 삭제 가능-->
-                              <c:if test="${user.uid eq sessUid or sessUid eq 'admin'}">
-                                 <a class="ms-2" href= "javascript:deleteFunc('${user.uid }')"><i class="fa-solid fa-user-minus"></i></a>
-                              </c:if>
-                              <c:if test="${user.uid ne sessUid and sessUid ne 'admin'}">
-                                 <a class="ms-2 disabled-link" href="#" ><i class="fa-solid fa-user-minus"></i></a>
-                              </c:if>
-                           </td>
-                        </tr>
-                        </c:forEach>
-                     </table>
-                     <!-- pagenation -->
-                     <!-- justify-content-center = 화면 중앙 -->
-					 <ul class="pagination justify-content-center">
-					 	<li class="page-item"><a class="page-link" href="#"><i class="fa-solid fa-less-than"></i></a></li>
-					 	<!-- 페이지 반복문 -->
-					 	<c:forEach var="page" items="${pageList }">
-					 		<li class="page-item ${currentUserPage eq page ? 'active' : '' }">
-					 			<a class="page-link" href="/jw/bbs/user/list?page=${page}">${page}</a>
-					 		</li>
-					 	</c:forEach>
-					 	<li class="page-item"><a class="page-link" href="#"><i class="fa-solid fa-greater-than"></i></a></li>
-					</ul>
-                  </div>
-                  <div class="col-1"></div>
-               </div>
-            </div>
-         </div>
-      </div>
-
-      <%@ include file="../common/_bottom.jspf" %>
-      <div class = "modal" id="deleteModal">
-         <div class="modal-dialog">
-            <div class="modal-content">
-            
-               <!-- Modal Header -->
-               <div class="modal-header">
-                  <h4 class="modal-title">사용자 탈퇴</h4>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-               </div>
-               
-               <!-- Modal body -->
-               <div class="modal-body">
-                  <strong>정말로 탈퇴하시겠습니까?</strong>
-                  <div class="text-center mt-5">
-                  	<form action="/jw/bbs/user/delete" method="post">
-                  		<input type="hidden" id="deleteUid" name="uid">
-	                  	<button class="btn btn-danger" type="submit">탈퇴</button>
-                  	</form>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
+	<%@ include file="../common/_top.jspf" %>
+	
+	<div class="container" style="margin-top:80px">
+		<div class="row">
+			<%@ include file="../common/_aside.jspf" %>
+			
+			<div class="col-9">
+				<table class="table table-sm table-borderless">
+					<tr>
+						<td style="width: 52%; text-align: left">
+							<h3><strong class="me-5">게시글 목록</strong>
+								<span style="font-size:16px"><a href="/jw/bbs/board/insert"><i class="fa-solid fa-pen-to-square"></i> 글 쓰기</a></span>
+							</h3>
+						</td>
+						<td style="width: 16%">
+							<select class="form-control" id="field">
+								<option value="title" ${field eq 'title' ? 'selected' : ''}>제목</option>
+								<option value="content" ${field eq 'content' ? 'selected' : ''}>본문</option>
+								<option value="uname" ${field eq 'uname' ? 'selected' : ''}>글쓴이</option>
+							</select>
+						</td>
+						<td style="width: 24%">
+						<c:if test="${empty query}">
+							<input class="form-control" type="text" id="query" placeholder="검색할 내용">
+						</c:if>
+						<c:if test="${not empty query}">
+							<input class="form-control" type="text" id="query" value="${query}">
+						</c:if>
+						</td>
+						<td style="width: 8%">
+							<button class="btn btn-outline-primary" onclick="search()">검색</button>
+						</td>
+					</tr>
+				</table>
+				<hr>
+				
+				<table class="table">
+					<tr>
+						<th style="width: 8%">ID</th>
+						<th style="width: 52%">제목</th>
+						<th style="width: 14%">글쓴이</th>
+						<th style="width: 16%">수정시간</th>
+						<th style="width: 10%">조회수</th>
+					</tr>
+					<c:forEach var="board" items="${boardList}">
+					<tr>
+						<td>${board.bid}</td>
+						<td>
+							<a href="/jw/bbs/board/detail?bid=${board.bid}">${board.title}</a>
+							<c:if test="${board.replyCount ge 1}">
+								<span class="text-danger">[${board.replyCount}]</span>
+							</c:if>
+						</td>
+						<td>${board.uname}</td>
+						<td>${fn:substring(fn:replace(board.modTime,"T"," "), 2, 16)}</td>
+						<td>${board.viewCount}</td>
+					</tr>
+					</c:forEach>
+				</table>
+				<%-- pagination --%>
+				<ul class="pagination justify-content-center mt-4">
+					<li class="page-item"><a class="page-link" href="#"><i class="fa-solid fa-less-than"></i></a></li>
+				<c:forEach var="page" items="${pageList}">
+					<li class="page-item ${currentBoardPage eq page ? 'active' : ''}">
+						<a class="page-link" href="/jw/bbs/board/list?p=${page}&f=${field}&q=${query}">${page}</a>
+					</li>
+				</c:forEach>
+					<li class="page-item"><a class="page-link" href="#"><i class="fa-solid fa-greater-than"></i></a></li>
+				</ul>	
+					
+			</div>
+		</div>
+	</div>
+	
+	<%@ include file="../common/_bottom.jspf" %>
+	
 </body>
 </html>

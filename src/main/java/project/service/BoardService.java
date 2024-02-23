@@ -1,6 +1,7 @@
 package project.service;
 
 import java.util.List;
+
 import project.entity.Board;
 
 
@@ -11,7 +12,7 @@ public interface BoardService {
 	
 	Board getBoard(int bid);
 	
-	int getBoardCount();
+	int getBoardCount(String field, String query);
 	
 	void insertBoard(Board board);
 	
@@ -19,10 +20,8 @@ public interface BoardService {
 	
 	void deleteBoard(int bid);
 	
-	void close();
-	
 	void increaseViewCount(int bid);
 	
 	void increaseReplyCount(int bid);
-	
+
 }
