@@ -15,6 +15,12 @@ public interface SkiEquipmentService {
     // 스키 장비 선택 확인 메서드
     void printSelectedSkiEquipment(String equipment_id, String equipment_name);
 
+    
+    
+    
+    
+    // ============킵
+    
     // 스키 장비 대여 추가 메서드
     void addSkiEquipmentRental(String equipment_id, String user_id);
 

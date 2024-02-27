@@ -38,8 +38,17 @@ public class Rentals {
 		this.end_date = end_date;
 		this.total_price = total_price;
 	}
-
 	
+	
+
+	//대여 가격 확인 및 지불 가격 입력 생성자
+	public Rentals(int total_price, int payment_status) {
+		super();
+		this.total_price = total_price;
+		this.payment_status = payment_status;
+	}
+	
+
 	@Override
 	public String toString() {
 		return "Rentals [rental_id=" + rental_id + ", user_id=" + user_id + ", equipment_id=" + equipment_id

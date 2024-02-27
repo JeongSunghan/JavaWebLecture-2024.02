@@ -1,5 +1,5 @@
 package mini.dao;
 
-public class rentalsDao {
+public class RentalsDao {
 
 }

@@ -23,7 +23,7 @@
 	
 	<div class="container" style="margin-top:80px">
 		<div class="row">
-			<%@ include file="../common/_aside.jspf" %>
+			<%-- <%@ include file="../common/_aside.jspf" %> --%>
 			
 			<div class="col-9">
 				<table class="table table-sm table-borderless">
