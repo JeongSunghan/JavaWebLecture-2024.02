@@ -317,4 +317,14 @@
     <servlet-name>BoardController</servlet-name>
     <url-pattern>/BoardController</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RentalController</display-name>
+    <servlet-name>RentalController</servlet-name>
+    <servlet-class>mini.controller.RentalController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RentalController</servlet-name>
+    <url-pattern>/RentalController</url-pattern>
+  </servlet-mapping>
 </web-app>
