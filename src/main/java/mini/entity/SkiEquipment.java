@@ -35,11 +35,9 @@ public class SkiEquipment {
 		this.image_url = image_url;
 	}
 	
-	
-	
-	//대여 수정했을 때 확인할 아이디
+
+	//대여한걸 수정하고 싶을 때 확인할 생성자 
 	public SkiEquipment(String user_id) {
-		super();
 		this.user_id = user_id;
 	}
 	

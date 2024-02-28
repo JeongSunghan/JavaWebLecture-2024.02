@@ -34,7 +34,8 @@ public class Rentals {
 	
 	
 	//대여 날짜 확인 생성자
-	public Rentals(LocalDateTime end_date, int total_price) {
+	public Rentals(LocalDateTime start_date, LocalDateTime end_date, int total_price) {
+		this.start_date = start_date;
 		this.end_date = end_date;
 		this.total_price = total_price;
 	}

@@ -4,18 +4,24 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>로그인</title>
+	<title>회원 가입</title>
 </head>
 <body>
-	<h2> 로그인 </h2>
+	<h2>회원 가입</h2>
 	<form action="#" method="post">
-	 <label for="username">ID:</label>
+		 <label for="username">ID:</label>
         <input type="text" name="username" required><br>
         
         <label for="password">비밀번호:</label>
         <input type="password" name="password" required><br>
         
-        <input type="submit" value="로그인">
+        <label for="email">이메일:</label>
+        <input type="email" name="email" required><br>
+        
+        <label for="phone_number">전화번호:</label>
+        <input type="text" name="phone_number" required><br>
+        
+        <input type="submit" value="가입하기">
 	</form>
 </body>
 </html>
