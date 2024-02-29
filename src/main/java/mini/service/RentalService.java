@@ -1,40 +1,35 @@
 package mini.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import mini.entity.Rentals;
+import mini.entity.Rental;
 
 public interface RentalService {
-	// 대여 등록 메서드
-	void registerRental(String rental_id, String user_id, String equipment_id, LocalDateTime start_date,
-			LocalDateTime end_date, int total_price, int payment_status);
+    public static final int RENTAL_SUCCESSFUL = 0;
+    public static final int ITEM_NOT_AVAILABLE = 1;
+    public static final int USER_NOT_EXIST = 2;
+    public static final int RETURN_SUCCESSFUL = 3;
+    public static final int COUNT_PER_PAGE = 10;
 
-	// 대여 정보 확인 메서드
-	void printRentalInfo(String rental_id, String user_id, String equipment_id);
+    Rental getRentalById(String rentalId);
 
-	// 대여 기간 확인 메서드
-	void printRentalPeriod(LocalDateTime end_date, int total_price);
+    List<Rental> getRentalList(int page);
 
-	// 가격 확인 메서드
-	void printRentalPrice(String rental_id);
+    int getRentalCount();
 
-	// 대여 상태 확인 메서드
-	void printRentalStatus(String rental_id);
+    void rentItem(String userId, String equipmentId, LocalDateTime startDate, LocalDateTime endDate, BigDecimal totalPrice);
 
-	// 대여 목록 가져오는 메서드
-	List<Rentals> getRentalList();
+    void returnItem(String rentalId);
+    
+    void rentAndPay(String userId, String equipmentId, LocalDateTime startDate, LocalDateTime endDate, BigDecimal totalPrice);
 
-	// 대여 목록 출력하는 메서드
-	void printRentalList();
+    void addRental(Rental rental);
 
-	// 대여 정보 업데이트 메서드
-	void updateRental(String rental_id, String user_id, String equipment_id, LocalDateTime start_date,
-			LocalDateTime end_date, int total_price, int payment_status);
+    void updateRental(Rental rental);
 
-	// 대여 정보 삭제 메서드
-	void deleteRental(String rental_id);
+    void deleteRental(String rentalId);
 
-	// 추가1
-	Rentals getRentalList(String rental_id);
+    void close();
 }

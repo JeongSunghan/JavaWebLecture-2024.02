@@ -1,72 +1,64 @@
 package mini.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import mini.dao.RentalsDao;
-import mini.entity.Rentals;
+import mini.dao.RentalDao;
+import mini.entity.Rental;
 
 public class RentalServiceImpl implements RentalService {
-    private RentalsDao rentalsDao;
+    private RentalDao rDao = new RentalDao();
 
-    public RentalServiceImpl() {
-        this.rentalsDao = new RentalsDao();
+    @Override
+    public Rental getRentalById(String rentalId) {
+        return rDao.getRentalById(rentalId);
     }
 
     @Override
-    public void registerRental(String rental_id, String user_id, String equipment_id, LocalDateTime start_date,
-            LocalDateTime end_date, int total_price, int payment_status) {
-        rentalsDao.registerRental(rental_id, user_id, equipment_id, start_date, end_date, total_price, payment_status);
-    }
-
-
-    @Override
-    public void printRentalInfo(String rental_id, String user_id, String equipment_id) {
-        rentalsDao.printRentalInfo(rental_id, user_id, equipment_id);
+    public List<Rental> getRentalList(int page) {
+        return rDao.getRentalList(page);
     }
 
     @Override
-    public void printRentalPeriod(LocalDateTime end_date, int total_price) {
-        rentalsDao.printRentalPeriod(end_date, total_price);
+    public int getRentalCount() {
+        return rDao.getRentalCount();
     }
 
     @Override
-    public void printRentalPrice(String rental_id) {
-        rentalsDao.printRentalPrice(rental_id);
+    public void rentItem(String userId, String equipmentId, LocalDateTime startDate, LocalDateTime endDate, BigDecimal totalPrice) {
+        rDao.rentItem(userId, equipmentId, startDate, endDate, totalPrice);
     }
 
     @Override
-    public void printRentalStatus(String rental_id) {
-        rentalsDao.printRentalStatus(rental_id);
+    public void returnItem(String rentalId) {
+        rDao.returnItem(rentalId);
     }
 
     @Override
-    public List<Rentals> getRentalList() {
-        return rentalsDao.getRentalsList();
+    public void addRental(Rental rental) {
+        rDao.addRental(rental);
     }
 
     @Override
-    public void printRentalList() {
-        rentalsDao.printRentalList();
+    public void updateRental(Rental rental) {
+        rDao.updateRental(rental);
     }
 
+    @Override
+    public void deleteRental(String rentalId) {
+        rDao.deleteRental(rentalId);
+    }
+
+    @Override
+    public void close() {
+        rDao.close();
+    }
+
+    //결제 추가하기
 	@Override
-	public void updateRental(String rental_id, String user_id, String equipment_id, LocalDateTime start_date,
-			LocalDateTime end_date, int total_price, int payment_status) {
+	public void rentAndPay(String userId, String equipmentId, LocalDateTime startDate, LocalDateTime endDate,
+			BigDecimal totalPrice) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void deleteRental(String rental_id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	//추가 1
-	@Override
-	public Rentals getRentalList(String rental_id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
