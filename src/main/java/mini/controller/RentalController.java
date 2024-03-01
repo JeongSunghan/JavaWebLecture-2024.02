@@ -1,10 +1,11 @@
 package mini.controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.List;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,7 +17,7 @@ import mini.entity.Rental;
 import mini.service.RentalService;
 import mini.service.RentalServiceImpl;
 
-@WebServlet({"/auction/rental/list", "/auction/rental/rent", "/auction/rental/return"})
+@WebServlet({ "/auction/rental/list", "/auction/rental/rent", "/auction/rental/return" })
 public class RentalController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private RentalService rSvc = new RentalServiceImpl();
@@ -25,79 +26,79 @@ public class RentalController extends HttpServlet {
 			throws ServletException, IOException {
 		String[] uri = request.getRequestURI().split("/");
 		String action = uri[uri.length - 1];
-		String method = request.getMethod();
 		HttpSession session = request.getSession();
 		RequestDispatcher rd = null;
-		String userId; // 유저 아이디
-		String equipmentId; // 장비 아이디
-		String rentalId; // 대여 아이디
-		String msg; // 메시지
-		String url; // 리다이렉트할 URL
 
 		switch (action) {
 		case "list":
-			// 대여 목록 조회
-			int page;
-			String pageParam = request.getParameter("page");
-			if (pageParam != null && !pageParam.isEmpty()) {
-				page = Integer.parseInt(pageParam);
-			} else {
-				// 페이지 매개변수가 없는 경우 기본 페이지 번호를 사용
-				page = 1;
-			}
-			List<Rental> rentalList = rSvc.getRentalList(page);
-			request.setAttribute("rentalList", rentalList);
-			// for pagination
-			int totalRentals = rSvc.getRentalCount();
-			int totalPages = (int) Math.ceil(totalRentals * 1.0 / rSvc.COUNT_PER_PAGE);
-			List<String> pageList = new ArrayList<String>();
-			for (int i = 1; i <= totalPages; i++) {
-				pageList.add(String.valueOf(i));
-			}
-			request.setAttribute("pageList", pageList);
-
+			List<Rental> rentals = rSvc.getRentalList(1, "rental_id", "");
+			request.setAttribute("rentals", rentals);
 			rd = request.getRequestDispatcher("/WEB-INF/miniview/rental/list.jsp");
 			rd.forward(request, response);
 			break;
 
 		case "rent":
-			if (method.equals("GET")) {
-				// 대여 페이지로 이동
+			if ("GET".equalsIgnoreCase(request.getMethod())) {
 				rd = request.getRequestDispatcher("/WEB-INF/miniview/rental/rent.jsp");
 				rd.forward(request, response);
-			} else {
-				// 대여 요청 처리
-				userId = (String) session.getAttribute("sessUid");
-				equipmentId = request.getParameter("equipmentId");
-				LocalDateTime startDate = LocalDateTime.now(); // 대여 시작 시간
-				LocalDateTime endDate = LocalDateTime.parse(request.getParameter("endDate")); // 대여 종료 시간
-				BigDecimal totalPrice = new BigDecimal(request.getParameter("totalPrice")); // 총 가격
-				rSvc.rentItem(userId, equipmentId, startDate, endDate, totalPrice);
-				msg = "장비를 대여하였습니다.";
-				url = "/auction/rental/list?page=1";
-				rd = request.getRequestDispatcher("/WEB-INF/miniview/common/alertMsg.jsp");
-				request.setAttribute("msg", msg);
-				request.setAttribute("url", url);
-				rd.forward(request, response);
+			} else if ("POST".equalsIgnoreCase(request.getMethod())) {
+				String userId = request.getParameter("userId");
+				String equipmentId = request.getParameter("equipmentId");
+				LocalDateTime startDate = LocalDateTime.parse(request.getParameter("startDate"),
+						DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+				LocalDateTime endDate = LocalDateTime.parse(request.getParameter("endDate"),
+						DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+				int totalPrice = Integer.parseInt(request.getParameter("totalPrice"));
+				Rental rental = new Rental(null, userId, equipmentId, startDate, endDate, totalPrice, 0);
+				int result = rSvc.insertRental(rental);
+				if (result == RentalService.RENTAL_SUCCESS) {
+					response.sendRedirect("list");
+				} else {
+					request.setAttribute("error", "렌탈 등록에 실패했습니다.");
+					rd = request.getRequestDispatcher("/WEB-INF/miniview/rental/error.jsp");
+					rd.forward(request, response);
+				}
 			}
 			break;
 
 		case "return":
-			if (method.equals("GET")) {
-				// 반납 페이지로 이동
+			if ("GET".equalsIgnoreCase(request.getMethod())) {
+				// 렌탈 반납 폼 페이지로 리다이렉션
 				rd = request.getRequestDispatcher("/WEB-INF/miniview/rental/return.jsp");
 				rd.forward(request, response);
-			} else {
-				// 반납 요청 처리
-				rentalId = request.getParameter("rentalId");
-				rSvc.returnItem(rentalId);
-				msg = "장비를 반납하였습니다.";
-				url = "/auction/rental/list?page=1";
-				rd = request.getRequestDispatcher("/WEB-INF/miniview/common/alertMsg.jsp");
-				request.setAttribute("msg", msg);
-				request.setAttribute("url", url);
-				rd.forward(request, response);
+			} else if ("POST".equalsIgnoreCase(request.getMethod())) {
+				int rentalId = Integer.parseInt(request.getParameter("rentalId"));
+				Rental returnRental = rSvc.getRental(rentalId); // 렌탈 정보 조회
+				if (returnRental != null) {
+					if (returnRental.getPaymentStatus() == 1) {
+						// 이미 반납이 완료된 렌탈인 경우
+						request.setAttribute("error", "이미 반납이 완료된 렌탈입니다.");
+						rd = request.getRequestDispatcher("/WEB-INF/miniview/rental/error.jsp");
+						rd.forward(request, response);
+					} else {
+						returnRental.setPaymentStatus(1); // 결제 상태를 "완료"로 업데이트
+						int updateResult = rSvc.updateRental(returnRental); // 변경 사항 저장
+						if (updateResult == RentalService.RENTAL_SUCCESS) {
+							// 반납 처리 성공, 렌탈 목록 페이지로 리다이렉션
+							response.sendRedirect("list");
+						} else {
+							// 반납 처리 실패, 에러 메시지와 함께 에러 페이지로 포워딩
+							request.setAttribute("error", "렌탈 반납에 실패했습니다.");
+							rd = request.getRequestDispatcher("/WEB-INF/miniview/rental/error.jsp");
+							rd.forward(request, response);
+						}
+					}
+				} else {
+					// 렌탈 정보가 없는 경우, 에러 메시지와 함께 에러 페이지로 포워딩
+					request.setAttribute("error", "해당 렌탈 정보를 찾을 수 없습니다.");
+					rd = request.getRequestDispatcher("/WEB-INF/miniview/rental/error.jsp");
+					rd.forward(request, response);
+				}
 			}
+			break;
+
+		default:
+			response.sendRedirect("list");
 			break;
 		}
 	}

@@ -5,55 +5,91 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>대여 목록</title>
+    <title>렌탈 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            overflow: hidden;
+            text-align: center;
+        }
+        h2 {
+            margin-top: 50px;
+        }
+        a {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
 </head>
 <body>
-    <h1>대여 목록</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>대여 ID</th>
-                <th>사용자 ID</th>
-                <th>장비 ID</th>
-                <th>대여 시작일</th>
-                <th>대여 종료일</th>
-                <th>총 가격</th>
-                <th>결제 상태</th>
-                <th>작업</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="rental" items="${rentalList}">
-                <tr>
-                    <td>${rental.getRentalId()}</td>
-                    <td>${rental.getUserId()}</td>
-                    <td>${rental.getEquipmentId()}</td>
-                    <td>${rental.getStartDate()}</td>
-                    <td>${rental.getEndDate()}</td>
-                    <td>${rental.getTotalPrice()}</td>
-                    <td>${rental.isPaymentStatus() ? "결제 완료" : "미결제"}</td>
-                    <td>
-                        <form action="${pageContext.request.contextPath}/auction/rental/rent" method="post">
-   							 <input type="hidden" name="equipmentId" value="${rental.getEquipmentId()}">
-    						<input type="hidden" name="endDate" value="${rental.getEndDate()}">
-    						<input type="hidden" name="totalPrice" value="${rental.getTotalPrice()}">
-    						<input type="submit" value="대여하기">
-						</form>
-
-                        <form action="${pageContext.request.contextPath}/auction/rental/return" method="post">
-                            <input type="hidden" name="rentalId" value="${rental.getRentalId()}">
-                            <input type="submit" value="반납하기">
-                        </form>
-                    </td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
-    
-    <div>
-        <c:forEach var="page" items="${pageList}">
-            <a href="${pageContext.request.contextPath}/auction/rental/list?page=${page}">${page}</a>&nbsp;
-        </c:forEach>
+    <div class="container">
+        <h2>렌탈 목록</h2>
+        <a href="/jw/auction/rental/rent">새 렌탈 추가</a>
     </div>
+    <table>
+        <tr>
+            <th>렌탈 ID</th>
+            <th>사용자 ID</th>
+            <th>장비 ID</th>
+            <th>시작 날짜</th>
+            <th>종료 날짜</th>
+            <th>총 가격</th>
+            <th>결제 상태</th>
+            <th>작업</th>
+        </tr>
+        <c:forEach var="rental" items="${rentals}">
+            <tr>
+                <td>${rental.rentalId}</td>
+                <td>${rental.userId}</td>
+                <td>${rental.equipmentId}</td>
+                <td>${rental.startDate}</td>
+                <td>${rental.endDate}</td>
+                <td>${rental.totalPrice}</td>
+                <td>${rental.paymentStatus == 1 ? "완료" : "미완료"}</td>
+                <td>
+                    <a href="/jw/auction/rental/return?rentalId=${rental.rentalId}">반납</a>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
 </body>
 </html>

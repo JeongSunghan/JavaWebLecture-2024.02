@@ -1,10 +1,8 @@
 package mini.dao;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,89 +27,68 @@ public class RentalDao {
 		return conn;
 	}
 
-	public Rental getRentalById(String rentalId) {
+	public Rental getRentalById(int rentalId) {
 		Connection conn = getConnection();
-		String sql = "SELECT * FROM rentals WHERE rental_id = ?";
+		String sql = "SELECT * FROM rentals WHERE rental_id=?";
 		Rental rental = null;
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, rentalId);
+			pstmt.setInt(1, rentalId);
 
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				rental = new Rental(rs.getString(1), rs.getString(2), rs.getString(3),
 						LocalDateTime.parse(rs.getString(4).replace(" ", "T")),
-						LocalDateTime.parse(rs.getString(5).replace(" ", "T")), rs.getBigDecimal(6), rs.getBoolean(7));
+						LocalDateTime.parse(rs.getString(5).replace(" ", "T")), rs.getInt(6), rs.getInt(7));
 			}
 
 			rs.close();
 			pstmt.close();
+			conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return rental;
 	}
 
-	public List<Rental> getRentalList(int page) {
+	public List<Rental> getRentalList(int page, int countPerPage) {
+		List<Rental> rentals = new ArrayList<>();
 		Connection conn = getConnection();
-		int offset = (page - 1) * 10;
-		String sql = "SELECT * FROM rentals LIMIT 10 OFFSET ?";
-		List<Rental> rentalList = new ArrayList<Rental>();
+		String sql = "SELECT * FROM rentals LIMIT ? OFFSET ?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, offset);
+			pstmt.setInt(1, countPerPage);
+			pstmt.setInt(2, (page - 1) * countPerPage);
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Rental rental = new Rental(rs.getString(1), rs.getString(2), rs.getString(3),
 						LocalDateTime.parse(rs.getString(4).replace(" ", "T")),
-						LocalDateTime.parse(rs.getString(5).replace(" ", "T")), 
-						rs.getBigDecimal(6), rs.getBoolean(7));
+						LocalDateTime.parse(rs.getString(5).replace(" ", "T")), rs.getInt(6), rs.getInt(7));
 
-				rentalList.add(rental);
+				rentals.add(rental);
 			}
-
 			rs.close();
 			pstmt.close();
 			conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return rentalList;
+		return rentals;
 	}
 
-	public int getRentalCount() {
+	public void insertRental(Rental rental) {
 		Connection conn = getConnection();
-		String sql = "SELECT COUNT(*) FROM rentals";
-		int count = 0;
-		try {
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-			if (rs.next()) {
-				count = rs.getInt(1);
-			}
-
-			rs.close();
-			stmt.close();
-			conn.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return count;
-	}
-
-	public void rentItem(String userId, String equipmentId, LocalDateTime startDate, LocalDateTime endDate,
-			BigDecimal totalPrice) {
-		Connection conn = getConnection();
-		String sql = "INSERT INTO rentals (user_id, equipment_id, start_date, end_date, total_price, payment_status) VALUES (?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO rentals (rental_id, user_id, equipment_id, start_date, end_date, total_price, payment_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userId);
-			pstmt.setString(2, equipmentId);
-			pstmt.setObject(3, startDate);
-			pstmt.setObject(4, endDate);
-			pstmt.setBigDecimal(5, totalPrice);
-			pstmt.setBoolean(6, false);
+			pstmt.setString(1, rental.getRentalId());
+			pstmt.setString(2, rental.getUserId());
+			pstmt.setString(3, rental.getEquipmentId());
+			pstmt.setString(4, rental.getStartDate().toString().replace(" ", "T"));
+			pstmt.setString(5, rental.getEndDate().toString().replace(" ", "T"));
+			pstmt.setInt(6, rental.getTotalPrice());
+			pstmt.setInt(7, rental.getPaymentStatus());
 
 			pstmt.executeUpdate();
 			pstmt.close();
@@ -119,42 +96,89 @@ public class RentalDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void returnItem(String rentalId) {
-		Connection conn = getConnection();
-		String sql = "UPDATE rentals SET payment_status = true WHERE rental_id = ?";
-		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, rentalId);
-
-			pstmt.executeUpdate();
-			pstmt.close();
-			conn.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void rentAndPay(String userId, String equipmentId, LocalDateTime startDate, LocalDateTime endDate, BigDecimal totalPrice) {
-		// 대여 요청 처리
-	}
-	
-        
-
-	public void addRental(Rental rental) {
-		// 필요하면 구현하기
 	}
 
 	public void updateRental(Rental rental) {
-		// 필요하면 구현하기
+	    Connection conn = getConnection();
+	    String sql = "UPDATE rentals SET user_id=?, equipment_id=?, start_date=?, end_date=?, total_price=?, payment_status=? WHERE rental_id=?";
+	    try {
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, rental.getUserId());
+	        pstmt.setString(2, rental.getEquipmentId());
+	        pstmt.setString(3, rental.getStartDate().toString().replace("T", " ")); // "T"를 공백으로 대체
+	        pstmt.setString(4, rental.getEndDate().toString().replace("T", " ")); // "T"를 공백으로 대체
+	        pstmt.setInt(5, rental.getTotalPrice());
+	        pstmt.setInt(6, rental.getPaymentStatus());
+	        pstmt.setString(7, rental.getRentalId());
+	        
+	        pstmt.executeUpdate();
+	        pstmt.close();
+	        conn.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 
-	public void deleteRental(String rentalId) {
-		// 필요하면 구현하기
+
+	public void deleteRental(int rentalId) {
+		Connection conn = getConnection();
+		String sql = "DELETE FROM rentals WHERE rental_id=?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, rentalId);
+
+			pstmt.executeUpdate();
+			pstmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void close() {
-		// 필요하면 구현하기
+	// 추가
+	public int countRentals() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0;
+
+		try {
+			conn = getConnection();
+			String sql = "SELECT COUNT(*) FROM rentals";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) { // 결과가 존재하면
+				count = rs.getInt(1); // 첫 번째 컬럼의 값을 가져오기
+			}
+		} catch (Exception e) {
+			e.printStackTrace(); // 예외 처리
+		} finally {
+			// 자원 해제
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return count; // 총 렌탈 수 반환
 	}
+
 }

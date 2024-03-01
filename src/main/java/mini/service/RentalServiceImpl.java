@@ -1,7 +1,5 @@
 package mini.service;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import mini.dao.RentalDao;
 import mini.entity.Rental;
@@ -10,55 +8,51 @@ public class RentalServiceImpl implements RentalService {
     private RentalDao rDao = new RentalDao();
 
     @Override
-    public Rental getRentalById(String rentalId) {
+    public List<Rental> getRentalList(int page, String field, String query) {
+        int countPerPage = RentalService.COUNT_PER_PAGE;
+        return rDao.getRentalList(page, countPerPage);
+    }
+
+    @Override
+    public Rental getRental(int rentalId) {
         return rDao.getRentalById(rentalId);
     }
 
     @Override
-    public List<Rental> getRentalList(int page) {
-        return rDao.getRentalList(page);
+    public int getRentalCount(String field, String query) {
+        return rDao.countRentals();
     }
 
     @Override
-    public int getRentalCount() {
-        return rDao.getRentalCount();
+    public int insertRental(Rental rental) {
+        try {
+            rDao.insertRental(rental);
+            return RentalService.RENTAL_SUCCESS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RentalService.RENTAL_FAIL;
+        }
     }
 
     @Override
-    public void rentItem(String userId, String equipmentId, LocalDateTime startDate, LocalDateTime endDate, BigDecimal totalPrice) {
-        rDao.rentItem(userId, equipmentId, startDate, endDate, totalPrice);
+    public int updateRental(Rental rental) {
+        try {
+            rDao.updateRental(rental);
+            return RentalService.RENTAL_SUCCESS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RentalService.RENTAL_FAIL;
+        }
     }
 
     @Override
-    public void returnItem(String rentalId) {
-        rDao.returnItem(rentalId);
+    public int deleteRental(int rentalId) {
+        try {
+            rDao.deleteRental(rentalId);
+            return RentalService.RENTAL_SUCCESS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RentalService.RENTAL_FAIL;
+        }
     }
-
-    @Override
-    public void addRental(Rental rental) {
-        rDao.addRental(rental);
-    }
-
-    @Override
-    public void updateRental(Rental rental) {
-        rDao.updateRental(rental);
-    }
-
-    @Override
-    public void deleteRental(String rentalId) {
-        rDao.deleteRental(rentalId);
-    }
-
-    @Override
-    public void close() {
-        rDao.close();
-    }
-
-    //결제 추가하기
-	@Override
-	public void rentAndPay(String userId, String equipmentId, LocalDateTime startDate, LocalDateTime endDate,
-			BigDecimal totalPrice) {
-		// TODO Auto-generated method stub
-		
-	}
 }

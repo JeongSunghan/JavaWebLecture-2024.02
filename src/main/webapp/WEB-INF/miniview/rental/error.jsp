@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>렌탈 반납</title>
+<title>에러 발생</title>
 <style>
 body {
 	font-family: Arial, sans-serif;
@@ -24,46 +24,40 @@ body {
 	background-color: #fff;
 	border-radius: 8px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	text-align: center;
 }
 
 h2 {
 	margin-top: 0;
-	color: #333;
+	color: #d9534f;
 }
 
-input[type="text"] {
-	width: 100%;
-	padding: 10px;
-	margin-bottom: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-sizing: border-box;
+p {
+	color: #666;
+	margin-bottom: 20px;
 }
 
-input[type="submit"] {
-	width: 100%;
-	padding: 10px;
+a {
+	display: inline-block;
+	padding: 10px 20px;
 	background-color: #007bff;
 	color: #fff;
-	border: none;
+	text-decoration: none;
 	border-radius: 4px;
-	cursor: pointer;
 	transition: background-color 0.3s;
 }
 
-input[type="submit"]:hover {
+a:hover {
 	background-color: #0056b3;
 }
 </style>
 </head>
 <body>
 	<div class="container">
-		<h2>렌탈 반납</h2>
-		<form action="/jw/auction/rental/return" method="post">
-			<label for="rentalId">렌탈 ID:</label><br> <input type="text"
-				id="rentalId" name="rentalId" required><br> <input
-				type="submit" value="렌탈 반납">
-		</form>
+		<h2>에러 발생</h2>
+		<p><%=request.getAttribute("error")%></p>
+		<a href="/jw/auction/rental/list">렌탈 목록으로 돌아가기</a>
 	</div>
 </body>
 </html>
+

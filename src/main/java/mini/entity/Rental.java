@@ -1,6 +1,5 @@
 package mini.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Rental {
@@ -9,12 +8,12 @@ public class Rental {
 	private String equipmentId;
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
-	private BigDecimal totalPrice;
-	private boolean paymentStatus;
+	private int totalPrice;
+	private int paymentStatus;
 
-	public Rental() {};
 	public Rental(String rentalId, String userId, String equipmentId, LocalDateTime startDate, LocalDateTime endDate,
-			BigDecimal totalPrice, boolean paymentStatus) {
+			int totalPrice, int paymentStatus) {
+		super();
 		this.rentalId = rentalId;
 		this.userId = userId;
 		this.equipmentId = equipmentId;
@@ -23,21 +22,22 @@ public class Rental {
 		this.totalPrice = totalPrice;
 		this.paymentStatus = paymentStatus;
 	}
-	
-	//가격 제외한 생성자(?)
+
 	public Rental(String rentalId, String userId, String equipmentId, LocalDateTime startDate, LocalDateTime endDate) {
+		super();
 		this.rentalId = rentalId;
 		this.userId = userId;
 		this.equipmentId = equipmentId;
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
-	
-	//계산을 위해 만든 생성자
-	public Rental(BigDecimal totalPrice, boolean paymentStatus) {
+
+	public Rental(int totalPrice, int paymentStatus) {
+		super();
 		this.totalPrice = totalPrice;
 		this.paymentStatus = paymentStatus;
 	}
+
 	@Override
 	public String toString() {
 		return "Rental [rentalId=" + rentalId + ", userId=" + userId + ", equipmentId=" + equipmentId + ", startDate="
@@ -85,19 +85,19 @@ public class Rental {
 		this.endDate = endDate;
 	}
 
-	public BigDecimal getTotalPrice() {
+	public int getTotalPrice() {
 		return totalPrice;
 	}
 
-	public void setTotalPrice(BigDecimal totalPrice) {
+	public void setTotalPrice(int totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 
-	public boolean isPaymentStatus() {
+	public int getPaymentStatus() {
 		return paymentStatus;
 	}
 
-	public void setPaymentStatus(boolean paymentStatus) {
+	public void setPaymentStatus(int paymentStatus) {
 		this.paymentStatus = paymentStatus;
 	}
 

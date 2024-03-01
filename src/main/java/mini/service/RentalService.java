@@ -1,35 +1,34 @@
 package mini.service;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import mini.entity.Rental;
 
 public interface RentalService {
-    public static final int RENTAL_SUCCESSFUL = 0;
-    public static final int ITEM_NOT_AVAILABLE = 1;
-    public static final int USER_NOT_EXIST = 2;
-    public static final int RETURN_SUCCESSFUL = 3;
+
+    // 상수 정의
+    public static final int RENTAL_SUCCESS = 0;
+    public static final int RENTAL_FAIL = 1;
+    public static final int EQUIPMENT_NOT_AVAILABLE = 2;
     public static final int COUNT_PER_PAGE = 10;
 
-    Rental getRentalById(String rentalId);
+    // 페이지 번호와 검색 조건에 따라 렌탈 목록 조회
+    List<Rental> getRentalList(int page, String field, String query);
 
-    List<Rental> getRentalList(int page);
+    // 특정 렌탈 ID로 렌탈 정보 조회
+    Rental getRental(int rentalId);
 
-    int getRentalCount();
+    // 검색 조건에 따른 렌탈 정보의 총 개수 조회
+    int getRentalCount(String field, String query);
 
-    void rentItem(String userId, String equipmentId, LocalDateTime startDate, LocalDateTime endDate, BigDecimal totalPrice);
+    // 새로운 렌탈 정보 추가
+    int insertRental(Rental rental);
 
-    void returnItem(String rentalId);
+    // 기존 렌탈 정보 수정
+    int updateRental(Rental rental);
+
+    // 특정 렌탈 정보 삭제
+    int deleteRental(String rentalId);
     
-    void rentAndPay(String userId, String equipmentId, LocalDateTime startDate, LocalDateTime endDate, BigDecimal totalPrice);
-
-    void addRental(Rental rental);
-
-    void updateRental(Rental rental);
-
-    void deleteRental(String rentalId);
-
-    void close();
 }
+
