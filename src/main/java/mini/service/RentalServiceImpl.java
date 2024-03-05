@@ -55,4 +55,10 @@ public class RentalServiceImpl implements RentalService {
             return RentalService.RENTAL_FAIL;
         }
     }
+
+	@Override
+	public int deleteRental(String rentalId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

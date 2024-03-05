@@ -29,6 +29,8 @@ public interface RentalService {
 
     // 특정 렌탈 정보 삭제
     int deleteRental(String rentalId);
+
+	int deleteRental(int rentalId);
     
 }
 
